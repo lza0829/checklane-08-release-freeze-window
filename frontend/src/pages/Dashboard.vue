@@ -19,9 +19,12 @@ onMounted(async () => {
       <div class="tile"><div class="hero-num">{{ stats.dataset_count }}</div><div class="muted">数据集</div></div>
       <div class="tile"><div class="hero-num">{{ stats.enabled_rule_count }}</div><div class="muted">启用规则</div></div>
       <div class="tile"><div class="hero-num">{{ stats.batch_count }}</div><div class="muted">入检批次</div></div>
+      <div class="tile"><div class="hero-num">{{ stats.held_batch_count || 0 }}</div><div class="muted">冻结挂起批次</div></div>
       <div class="tile"><div class="hero-num">{{ stats.curated_count }}</div><div class="muted">精选行</div></div>
       <div class="tile"><div class="hero-num">{{ stats.quarantine_count }}</div><div class="muted">隔离行</div></div>
     </div>
+    <p v-if="stats?.freeze_active" class="tag danger">冻结窗生效中：新入检通过行将挂起，不写入精选区</p>
     <router-link class="btn" to="/inspect">去入检台</router-link>
+    <router-link class="btn btn-secondary" style="margin-left:8px" to="/freeze-window">配置冻结窗</router-link>
   </div>
 </template>

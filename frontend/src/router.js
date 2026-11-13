@@ -6,6 +6,7 @@ import Inspect from './pages/Inspect.vue'
 import Batches from './pages/Batches.vue'
 import Quarantine from './pages/Quarantine.vue'
 import Curated from './pages/Curated.vue'
+import FreezeWindow from './pages/FreezeWindow.vue'
 
 export default createRouter({
   history: createWebHistory(),
@@ -14,6 +15,7 @@ export default createRouter({
     { path: '/datasets', component: Datasets },
     { path: '/rules', component: Rules },
     { path: '/inspect', component: Inspect },
+    { path: '/freeze-window', component: FreezeWindow },
     { path: '/batches', component: Batches },
     { path: '/quarantine', component: Quarantine },
     { path: '/curated', component: Curated },

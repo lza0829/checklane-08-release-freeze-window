@@ -38,12 +38,21 @@ async function run() {
     </div>
     <p v-if="err" class="tag danger">{{ err }}</p>
     <div class="panel" v-if="last">
-      <h3>批次 #{{ last.id }} <span class="tag" :class="last.status === 'released' ? 'ok' : ''">{{ last.status }}</span></h3>
+      <h3>
+        批次 #{{ last.id }}
+        <span class="tag" :class="last.status === 'released' ? 'ok' : (last.status === 'frozen_held' ? 'danger' : '')">
+          {{ last.status === 'frozen_held' ? '检过未签发·冻结挂起' : last.status }}
+        </span>
+      </h3>
+      <p v-if="last.report.freeze?.active" class="tag danger">
+        冻结窗内入检：规则与隔离照常执行，通过行挂起，零写入精选区；解冻后可补签
+      </p>
       <div class="tiles">
         <div class="tile"><div class="hero-num">{{ last.scanned_count }}</div><div class="muted">扫描</div></div>
-        <div class="tile"><div class="hero-num">{{ last.passed_count }}</div><div class="muted">通过</div></div>
+        <div class="tile"><div class="hero-num">{{ last.passed_count }}</div><div class="muted">已检通过</div></div>
         <div class="tile"><div class="hero-num">{{ last.quarantined_count }}</div><div class="muted">隔离</div></div>
-        <div class="tile"><div class="hero-num">{{ last.released_count }}</div><div class="muted">签发</div></div>
+        <div class="tile"><div class="hero-num">{{ last.held_count || last.report.counts.held_by_freeze || 0 }}</div><div class="muted">冻结未签发</div></div>
+        <div class="tile"><div class="hero-num">{{ last.released_count }}</div><div class="muted">最终签发</div></div>
       </div>
       <h4>对账</h4>
       <table>

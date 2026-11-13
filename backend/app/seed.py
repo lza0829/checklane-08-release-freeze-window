@@ -80,6 +80,17 @@ def init_db() -> None:
         );
         """
     )
+    # 放行冻结窗：批次挂起态所需列（对旧库做幂等补列）
+    existing_cols = {r["name"] for r in conn.execute("PRAGMA table_info(inspect_batches)").fetchall()}
+    extra_cols = {
+        "held_count": "INTEGER NOT NULL DEFAULT 0",
+        "freeze_window_json": "TEXT",
+        "held_at": "TEXT",
+        "signed_at": "TEXT",
+    }
+    for name, decl in extra_cols.items():
+        if name not in existing_cols:
+            conn.execute(f"ALTER TABLE inspect_batches ADD COLUMN {name} {decl}")
     n = conn.execute("SELECT COUNT(*) AS c FROM datasets").fetchone()["c"]
     if n == 0:
         conn.execute(
